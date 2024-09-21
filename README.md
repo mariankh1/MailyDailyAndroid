@@ -2,14 +2,19 @@
 
 Welcome to MailyDaily! 🌟 Your AI-powered email assistant that helps you manage your unread emails with ease.
 
-**Please use [Version 1 as current wokring branch](https://github.com/mariankh1/MailyDailyAndroid/tree/vesion1) **
+**Please use [Version 1 as current working branch](https://github.com/mariankh1/MailyDailyAndroid/tree/version1)**
 
 ## Features
 
-- **Google Sign-In**: Allows users to log in with their Gmail account.
-- **Email Summarization**: Fetches unread emails and provides a summary.
-- **Actionable Recommendations**: Generates actionable items from email content.
-- **Modern UI**: User-friendly interface with profile display and action buttons.
+- **Google Sign-In**: Allows users to log in with their Gmail account. ✅
+- **Email Fetching**: Retrieve unread emails from the user's inbox.✅
+- **Email Summarization**: Fetches unread emails and provides a summary. ✅
+- **Actionable Recommendations**: Generates actionable items from email content. ✅
+- **Sign-In with other email clients**: Allows users to log in with accounts from various email clients.❌
+- **Modern Conversational UI**: User-friendly interface with profile display and action buttons. ❌
+- **Email Notifications**: Notify users of new unread emails / every morning or on set time . ❌
+- **Voice Assistant Integration**: Allow users to interact with the app using voice commands. ❌
+- **Settings Screen**: Manage app settings and preferences. ❌
 
 ## Technologies Used
 
@@ -38,7 +43,12 @@ Welcome to MailyDaily! 🌟 Your AI-powered email assistant that helps you manag
 
 ## Contributing
 
-Feel free to contribute to the project by submitting issues or pull requests. We welcome all contributions!
+Feel free to contribute to the project by submitting issues or pull requests. We welcome all contributions! Here's what we need to implement:
+
+- **Email Fetching**: Retrieve unread emails from the user's inbox. 
+- **Email Notifications**: Notify users of new unread emails. 
+- **Voice Assistant Integration**: Allow users to interact with the app using voice commands. 
+- **Settings Screen**: Manage app settings and preferences. 
 
 ## License
 
