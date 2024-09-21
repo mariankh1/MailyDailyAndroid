@@ -20,10 +20,10 @@ Welcome to MailyDaily! 🌟 Your AI-powered email assistant that helps you manag
 
 ## Screenshots of Current Progress
 
-![Summary Screen](assets/screenshots/1.png)  
+![Summary Screen](https://github.com/mariankh1/MailyDailyAndroid/tree/version1/docs/assets/screenshots/1.png)  
 *Summary of emails and recommended actions.*
 
-![Email Card](assets/screenshots/2.png)  
+![Email Card](https://github.com/mariankh1/MailyDailyAndroid/tree/version1/docs/assets/screenshots/2.png)  
 *Example of the emails and how the actions are rendered.*
 
 ## Getting Started
