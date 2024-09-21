@@ -2,7 +2,7 @@
 
 Welcome to MailyDaily! 🌟 Your AI-powered email assistant that helps you manage your unread emails with ease.
 
-**Please use Version 1 as current wokring branch**
+**Please use [Version 1 as current wokring branch](https://github.com/mariankh1/MailyDailyAndroid/tree/vesion1) **
 
 ## Features
 
