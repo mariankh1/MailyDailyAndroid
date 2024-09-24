@@ -5,19 +5,13 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.http.HttpTransport
-import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.json.JsonFactory
-import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.gmail.Gmail
-import com.google.api.services.gmail.model.ListMessagesResponse
 import com.google.api.services.gmail.model.Message
 import com.google.api.services.gmail.model.MessagePart
 import com.google.api.services.gmail.model.MessagePartHeader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -119,7 +113,8 @@ class EmailFunctionality {
 
 
 
-    private fun extractEmailContent(message: Message, service: Gmail): EmailContent {
+
+    fun extractEmailContent(message: Message, service: Gmail): EmailContent {
         val messageId = message.id ?: "No ID"
         val emailDate = message.internalDate?.let { Date(it) } ?: Date()
         val emailSnippet = message.snippet ?: "No snippet"
@@ -176,73 +171,4 @@ class EmailFunctionality {
 
         return "No content available"
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun fetchEmails(account: GoogleSignInAccount) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                Log.d("EMAIL_FETCH", "Fetching emails")
-                isLoading = true
-                val credential = GoogleAccountCredential.usingOAuth2(
-                    this@MainActivity, listOf("https://www.googleapis.com/auth/gmail.readonly")
-                ).apply {
-                    selectedAccount = account.account
-                }
-
-                val transport: HttpTransport = NetHttpTransport()
-                val jsonFactory: JsonFactory = GsonFactory.getDefaultInstance()
-
-                val service = Gmail.Builder(
-                    transport,
-                    jsonFactory,
-                    credential
-                ).setApplicationName("MailyDaily")
-                    .build()
-
-                val response: ListMessagesResponse = service.users().messages().list("me").apply {
-                    q = "newer_than:1d" // Fetch emails from the last day
-                }.execute()
-
-                val messages = response.messages ?: emptyList()
-                val emailContents = mutableListOf<EmailContent>()
-
-                // Process emails in parallel using coroutines
-                val jobs = messages.map { message ->
-                    async {
-                        val msg: Message = service.users().messages().get("me", message.id).execute()
-                        val emailContent = extractEmailContent(msg, service)
-
-                        // Classify the email and extract actions
-                        val actionsDeferred = async { extractRecommendedActions("FROM:" +emailContent.sender+ " DATE: "+ emailContent.date +" " + emailContent.fullText) }
-
-                        val (summary, actions) = actionsDeferred.await()
-
-                        // Update the email content with the fetched summary and actions
-                        emailContent.fullText = summary
-                        emailContent.actions = actions
-
-                        emailContents.add(emailContent)
-                    }
-                }
-
-                // Await all jobs to complete
-                jobs.awaitAll()
-
-                // Update UI state on the main thread
-                withContext(Dispatchers.Main) {
-                    emailContentList = emailContents
-                    isLoading = false
-                }
-
-                Log.d("EMAIL_FETCH", "Emails fetched successfully")
-            } catch (e: Exception) {
-                Log.e("EMAIL_FETCH", "Error fetching emails", e)
-                // Ensure UI is updated to stop loading spinner if an error occurred
-                withContext(Dispatchers.Main) {
-                    isLoading = false
-                }
-            }
-        }
-    }
-
 }
